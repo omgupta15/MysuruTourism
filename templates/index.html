@@ -151,43 +151,40 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <h1 class="card-header text-uppercase" id="hotels">Hotels</h1>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--1bK5NRtr--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/581/original/1568097723_shutterstock_1325348915.jpg.jpg" class="card-img-top">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Mysore Palace</h5>
-                                        <p class="card-text text-justify">The second most famous attraction in India, first being the Taj Mahal, Mysore Palace is easily one of the most imposing architectural buildings in the country.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
+                            {% for hotel in topHotels %}
+                                <div class="col-md-4">
+                                    <div class="card image-card">
+                                        <img src="/resources/img/hotels/{{ hotel.thumbnail }}" class="card-img-top">
+                                        <div class="card-body">
+                                            <h3 class="card-title">{{ hotel.name }}</h3>
+                                            <p class="card-text hotel-text">
+                                                <strong>
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                    Starting from <span class="price-span">₹{{ hotel.price.replace("&#8377;", "") }}</span>!
+                                                </strong><br>
+                                                <strong>
+                                                    <i class="fas fa-star"></i>&nbsp; Rating:
+                                                </strong>&nbsp;{{ hotel.rating }}/5 Stars
+                                                <br>
+                                                <strong>
+                                                    &nbsp;<i class="fas fa-map-marker-check"></i>
+                                                    &nbsp;Address:
+                                                </strong>
+                                                <span>{{ hotel.address[:20] }}...</span>
+                                                <br>
+                                            </p>
+                                            <a href="/hotels/{{ hotel.hotelId }}" class="btn btn-link">More Info</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--CTjxu8iU--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/661/original/1568456428_shutterstock_162648665.jpg.jpg" class="card-img-top" alt="Brindavan Gardens">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Brindavan Gardens</h5>
-                                        <p class="card-text text-justify">The Brindavan Gardens are located just a level below the Krishna Raja Sagara dam.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--Xc_EdSPu--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/594/original/1568208672_shutterstock_1268128237.jpg.jpg" class="card-img-top" alt="Sri Chamarajendra Zoological Gardens">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Sri Chamarajendra Zoological Gardens</h5>
-                                        <p class="card-text">Treat the animal lover in you, visit Sri Chamarajendra Zoological Gardens at Mysore.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div style="text-align: center;">
                             <a class="btn btn-outline-pink text-uppercase" href="/find-hotels" style="font-size: 150%">

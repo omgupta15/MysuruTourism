@@ -43,10 +43,18 @@ def index():
 
     topPlaces = [{i: j for i, j in zip(["name", "thumbnail", "description", "placeId", "index"], row + (index,))} for index, row in enumerate(result)]
 
+    with getDatabase() as database:
+        with database.cursor() as cursor:
+            cursor.execute("SELECT name, thumbnail, hotelId, rating, price, address FROM Hotels LIMIT 3")
+            result = cursor.fetchall()
+
+    topHotels = [{i: j for i, j in zip(["name", "thumbnail", "hotelId", "rating", "price", "address"], row)} for row in result]
+
     return flask.render_template(
         "index.html",
         config = config,
-        topPlaces = topPlaces
+        topPlaces = topPlaces,
+        topHotels = topHotels
     )
 
 app.run(

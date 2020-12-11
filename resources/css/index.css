@@ -107,3 +107,11 @@
     color: white;
     background-color: #db0161;
 }
+
+.price-span {
+    color: #008f00;
+}
+
+.hotel-text {
+    font-size: 110%;
+}
