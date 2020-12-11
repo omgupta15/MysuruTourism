@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 0.3rem;">
                         <div class="btn-nav">
-                            <a class="btn btn-outline-orange navbar-btn" href="/places-to-visit">
+                            <a class="btn btn-outline-orange navbar-btn" href="/places">
                                 <i class="fas fa-image"></i>&nbsp;
                                 Places to Visit
                             </a>
@@ -98,29 +98,17 @@
                         <li data-target="#carouselIndicators" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <div class="carousel-item active dark-background">
-                            <img class="d-block w-100 carousel-dark-image" src="https://images.thrillophilia.com/image/upload/s--1bK5NRtr--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/581/original/1568097723_shutterstock_1325348915.jpg.jpg" alt="Mysore Palace">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h2 class="carousel-text">Mysore Palace</h2>
-                                <p class="carousel-text">
-                                    The second most famous attraction in India, first being the Taj Mahal, Mysore Palace is easily one of the most imposing architectural buildings in the country.
-                                </p>
+                        {% for place in topPlaces %}
+                            <div class="carousel-item {% if not place.index %} active{% endif %} dark-background">
+                                <img class="d-block w-100 carousel-dark-image" src="/resources/img/places/{{ place.thumbnail }}" alt="{{ place.name }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h2 class="carousel-text">{{ place.name }}</h2>
+                                    <p class="carousel-text">
+                                        {{ place.description }}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="carousel-item dark-background">
-                            <img class="d-block w-100 carousel-dark-image" src="https://images.thrillophilia.com/image/upload/s--CTjxu8iU--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/661/original/1568456428_shutterstock_162648665.jpg.jpg" alt="Brindavan Gardens">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h2 class="carousel-text">Brindavan Gardens</h2>
-                                <p class="carousel-text">The Brindavan Gardens are located just a level below the Krishna Raja Sagara dam.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item dark-background">
-                            <img class="d-block w-100 carousel-dark-image" src="https://images.thrillophilia.com/image/upload/s--Xc_EdSPu--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/594/original/1568208672_shutterstock_1268128237.jpg.jpg" alt="Sri Chamarajendra Zoological Gardens">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h2 class="carousel-text">Sri Chamarajendra Zoological Gardens</h2>
-                                <p class="carousel-text">Treat the animal lover in you, visit Sri Chamarajendra Zoological Gardens at Mysore.</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -140,39 +128,21 @@
                     <h1 class="card-header text-uppercase" id="placesToVisit">Places to Visit</h1>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--1bK5NRtr--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/581/original/1568097723_shutterstock_1325348915.jpg.jpg" class="card-img-top">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Mysore Palace</h5>
-                                        <p class="card-text text-justify">The second most famous attraction in India, first being the Taj Mahal, Mysore Palace is easily one of the most imposing architectural buildings in the country.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
+                            {% for place in topPlaces %}
+                                <div class="col-md-4">
+                                    <div class="card image-card">
+                                        <img src="/resources/img/places/{{ place.thumbnail }}" class="card-img-top" alt="{{ place.name }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ place.name }}</h5>
+                                            <p class="card-text">{{ place.description }}</p>
+                                            <a href="/place/{{ place.placeId }}" class="btn btn-link">View More</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--CTjxu8iU--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/661/original/1568456428_shutterstock_162648665.jpg.jpg" class="card-img-top" alt="Brindavan Gardens">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Brindavan Gardens</h5>
-                                        <p class="card-text text-justify">The Brindavan Gardens are located just a level below the Krishna Raja Sagara dam.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card image-card">
-                                    <img src="https://images.thrillophilia.com/image/upload/s--Xc_EdSPu--/c_fill,dpr_1.0,f_auto,fl_strip_profile,g_center,h_450,q_auto,w_753/v1/images/photos/000/087/594/original/1568208672_shutterstock_1268128237.jpg.jpg" class="card-img-top" alt="Sri Chamarajendra Zoological Gardens">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Sri Chamarajendra Zoological Gardens</h5>
-                                        <p class="card-text">Treat the animal lover in you, visit Sri Chamarajendra Zoological Gardens at Mysore.</p>
-                                        <a href="#" class="btn btn-link">View More</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div style="text-align: center;">
-                            <a class="btn btn-outline-orange text-uppercase" href="/places-to-visit" style="font-size: 150%">
+                            <a class="btn btn-outline-orange text-uppercase" href="/places" style="font-size: 150%">
                                 <i class="fas fa-image"></i>&nbsp;
                                 View All
                             </a>
@@ -181,7 +151,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

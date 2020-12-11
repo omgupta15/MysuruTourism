@@ -7,7 +7,7 @@ def getDatabase():
         host = "localhost",
         user = os.environ.get("MySQL_username"),
         passwd = os.environ.get("MySQL_password"),
-        # database = "MysuruTourism"
+        database = "MysuruTourism"
     )
 
 class config:
@@ -36,6 +36,21 @@ def index():
     method = flask.request.method
     ip = flask.request.remote_addr
 
-    return flask.render_template("index.html", config = config)
+    with getDatabase() as database:
+        with database.cursor() as cursor:
+            cursor.execute("SELECT name, thumbnail, shortDescription, placeId FROM PlacesToVisit LIMIT 3")
+            result = cursor.fetchall()
 
-app.run(host = config.ip, port = config.port, debug = True)
+    topPlaces = [{i: j for i, j in zip(["name", "thumbnail", "description", "placeId", "index"], row + (index,))} for index, row in enumerate(result)]
+
+    return flask.render_template(
+        "index.html",
+        config = config,
+        topPlaces = topPlaces
+    )
+
+app.run(
+    host = config.ip,
+    port = config.port,
+    debug = True
+)
