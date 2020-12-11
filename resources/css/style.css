@@ -1,0 +1,164 @@
+* {
+    font-family: 'Langar', cursive;
+}
+
+body {
+    background-image: url("/resources/img/background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+footer {
+    background-color: white;
+    display: flex;
+    text-align: center;
+}
+
+#navbar-logo {
+    width: 12rem;
+}
+
+.btn-orange {
+    color: #ffffff;
+    background-color: #f58120;
+    border-color: #f58120;
+}
+
+.btn-orange:hover {
+    color: #ffffff;
+    background-color: #e06702;
+    border-color: #e06702;
+}
+
+.btn-outline-orange {
+    color: #f58120;
+    border-color: #f58120;
+}
+
+.btn-outline-orange:hover {
+    color: #ffffff;
+    background-color: #f58120;
+    border-color: #f58120;
+}
+
+.btn-pink {
+    color: #ffffff;
+    background-color: #db0161;
+    border-color: #db0161;
+}
+
+.btn-pink:hover {
+    color: #ffffff;
+    background-color: #bf0054;
+    border-color: #bf0054;
+}
+
+.btn-outline-pink {
+    color: #db0161;
+    border-color: #db0161;
+}
+
+.btn-outline-pink:hover {
+    color: #ffffff;
+    background-color: #db0161;
+    border-color: #db0161;
+}
+
+.dark-background {
+    background-color: black;
+}
+
+.carousel-dark-image {
+    transition: opacity 0.3s ease;
+}
+
+.carousel-dark-image:hover {
+    opacity: 0.7;
+    transition-duration: 0.25s;
+}
+
+.carousel-text {
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.footer-div {
+    margin: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: white;
+}
+
+.grey-text {
+    color: grey;
+}
+
+.row {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+#carouselIndicators {
+    border: 0.4rem solid white;
+    border-radius: 0.4rem;
+}
+
+.card {
+    border: 0.4rem solid white;
+    border-radius: 0.4rem;
+}
+
+.btn-link {
+    border-color: #007bff;
+}
+
+.image-card {
+    border: 0.2rem solid lightgrey;
+}
+
+.image-card > img {
+    transition: opacity 0.3s ease;
+}
+
+.image-card:hover > img {
+    opacity: 0.9;
+    transition-duration: 0.25s;
+}
+
+#placesToVisit {
+    text-align: center;
+    color: white;
+    background-color: #f58120;
+}
+
+#hotels {
+    text-align: center;
+    color: white;
+    background-color: #db0161;
+}
+
+#articles {
+    text-align: center;
+    color: white;
+    background-color: #007bff;
+}
+
+#restrictions {
+    text-align: center;
+    color: #212529;
+    background-color: #ffc107;
+}
+
+#quarantine-rules {
+    text-align: center;
+    color: white;
+    background-color: #f58120;
+}
+
+.price-span {
+    color: #008f00;
+}
+
+.hotel-text {
+    font-size: 110%;
+}

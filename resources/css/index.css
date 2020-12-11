@@ -108,6 +108,18 @@
     background-color: #db0161;
 }
 
+#articles {
+    text-align: center;
+    color: white;
+    background-color: #007bff;
+}
+
+#restrictions {
+    text-align: center;
+    color: #212529;
+    background-color: #ffc107;
+}
+
 .price-span {
     color: #008f00;
 }

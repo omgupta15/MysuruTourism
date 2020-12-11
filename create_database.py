@@ -62,11 +62,10 @@ with getDatabase() as database:
         cursor.execute("""
             CREATE TABLE Articles (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                name BIGINT,
+                name TEXT,
                 description LONGTEXT,
                 thumbnail LONGTEXT,
                 articleLink LONGTEXT
             )
         """)
         database.commit()
-

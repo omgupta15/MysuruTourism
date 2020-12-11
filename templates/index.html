@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
-    <link rel="stylesheet" type="text/css" href="/resources/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
 </head>
 <body>
     <nav class="navbar navbar-light navbar-expand-lg bg-light">
@@ -124,8 +124,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <h1 class="card-header text-uppercase" id="placesToVisit">Places to Visit</h1>
+                <div class="card card-outer">
+                    <h1 class="card-header text-uppercase" id="placesToVisit">
+                        <i class="fas fa-image"></i>&nbsp; Places to Visit
+                    </h1>
                     <div class="card-body">
                         <div class="row">
                             {% for place in topPlaces %}
@@ -135,7 +137,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">{{ place.name }}</h5>
                                             <p class="card-text">{{ place.description }}</p>
-                                            <a href="/place/{{ place.placeId }}" class="btn btn-link">View More</a>
+                                            <a href="/place/{{ place.placeId }}" class="btn btn-link">View Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +145,7 @@
                         </div>
                         <div style="text-align: center;">
                             <a class="btn btn-outline-orange text-uppercase" href="/places" style="font-size: 150%">
-                                <i class="fas fa-image"></i>&nbsp;
+                                <i class="fas fa-arrow-down"></i>
                                 View All
                             </a>
                         </div>
@@ -154,8 +156,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <h1 class="card-header text-uppercase" id="hotels">Hotels</h1>
+                <div class="card card-outer">
+                    <h1 class="card-header text-uppercase" id="hotels">
+                        <i class="fas fa-hotel"></i>&nbsp; Hotels
+                    </h1>
                     <div class="card-body">
                         <div class="row">
                             {% for hotel in topHotels %}
@@ -188,8 +192,44 @@
                         </div>
                         <div style="text-align: center;">
                             <a class="btn btn-outline-pink text-uppercase" href="/find-hotels" style="font-size: 150%">
-                                <i class="fas fa-hotel"></i>&nbsp;
+                                <i class="fas fa-arrow-down"></i>
                                 View More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-outer">
+                    <h1 class="card-header text-uppercase" id="articles">
+                        <i class="fas fa-newspaper"></i>&nbsp; Articles
+                    </h1>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for article in topArticles %}
+                                <div class="col-md-4">
+                                    <div class="card image-card">
+                                        <img src="/resources/img/articles/{{ article.thumbnail }}" class="card-img-top">
+                                        <div class="card-body">
+                                            <h3 class="card-title">{{ article.name }}</h3>
+                                            <p class="card-text">
+                                                {{ article.description[:130] }}...
+                                            </p>
+                                            <a href="{{ article.link }}" class="btn btn-link" target="_blank">
+                                                Read Article
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div style="text-align: center;">
+                            <a class="btn btn-outline-primary text-uppercase" href="/articles" style="font-size: 150%">
+                                <i class="fas fa-arrow-down"></i>
+                                View All
                             </a>
                         </div>
                     </div>
