@@ -141,6 +141,46 @@ def getPlaceDetails(placeId):
         placeDetails = placeDetails
     )
 
+@app.route("/articles", methods = ["GET"])
+@limiter.limit("5/second")
+def articles():
+    args = flask.request.args
+    data = flask.request.get_data(as_text = True)
+    cookies = flask.request.cookies
+    headers = flask.request.headers
+    method = flask.request.method
+    ip = flask.request.remote_addr
+
+    result = []
+
+    for page in ("", "page/2/", "page/3/"):
+        response = requests.get("https://starofmysore.com/category/feature-articles/" + page).text
+        blogs = response.split("<div class=\"standard_blog\">")[1].split("class=\"alaya_pagenavi\"")[0]
+
+        for blog in blogs.split("<article class")[1:]:
+            link = blog.split("href=")[1][:blog.split("href=")[1].index("\">")].strip("\"")
+            title = html.unescape(blog.split("title=")[2][blog.split("title=")[2].index("\">")+2:].split("</a></h4>")[0])
+            date = blog.split("<span class=\"category\">")[2][:blog.split("<span class=\"category\">")[2].index("</span>")]
+            description = html.unescape(blog.split("<p>")[-1].split("</p>")[0])
+            thumbnail = blog.split("<img width=")[1].split("src=")[1][:blog.split("<img width=")[1].split("src=")[1].index("class=")].strip().strip("\"")
+            thumbnail = urllib.parse.quote_plus(thumbnail)
+            
+            result.append((title, description, thumbnail, link, date,))
+
+    articles = [{i: j for i, j in zip(["name", "description", "thumbnail", "link", "date"], row)} for row in result]
+    
+    articlesRows = [[]]
+    for index, article in enumerate(articles):
+        if index % 3 == 0:
+            articlesRows.append([])
+        articlesRows[-1].append(article)
+
+    return flask.render_template(
+        "articles.html",
+        config = config,
+        articles = articlesRows
+    )
+
 @app.route("/restrictions-lockdown", methods = ["GET"])
 @limiter.limit("1/second")
 def restriction():

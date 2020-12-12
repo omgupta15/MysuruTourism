@@ -53,7 +53,7 @@
                     </li>
                     <li style="margin: 0.3rem;">
                         <div class="btn-nav">
-                            <a class="btn btn-outline-primary navbar-btn" href="https://starofmysore.com/category/feature-articles/">
+                            <a class="btn btn-outline-primary navbar-btn" href="/articles">
                                 <i class="fas fa-newspaper"></i>&nbsp;
                                 Articles
                             </a>
@@ -136,7 +136,7 @@
                                         <img src="/resources/img/places/{{ place.thumbnail }}" class="card-img-top" alt="{{ place.name }}">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ place.name }}</h5>
-                                            <p class="card-text">{{ place.description }}</p>
+                                            <p class="card-text text-justify">{{ place.description }}</p>
                                             <a href="/place/{{ place.placeId }}" class="btn btn-link">View Details</a>
                                         </div>
                                     </div>
@@ -215,7 +215,12 @@
                                         <img src="/get-image/{{ article.thumbnail }}" class="card-img-top">
                                         <div class="card-body">
                                             <h3 class="card-title">{{ article.name }}</h3>
-                                            <p class="card-text">
+                                            <p class="card-text text-justify">
+                                                <span class="grey-text">
+                                                    <i class="fas fa-calendar-week"></i>
+                                                    {{ article.date }}
+                                                </span>
+                                                <br>
                                                 {{ article.description[:130] }}...
                                             </p>
                                             <a href="{{ article.link }}" class="btn btn-link" target="_blank">
