@@ -49,7 +49,7 @@ def index():
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
         }).text
-
+    
     topHotels = response.split("<h2 class=\"h2\">Top hotels</h2>")[1].split("<div class=\"trvsc_toplist_more trvsc_more_top_hotels\">")[0]
     topHotels = topHotels.split("<a href=\"")[1:]
     result = []
