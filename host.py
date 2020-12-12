@@ -1,4 +1,5 @@
 import flask, time, waitress, mysql.connector, paginate, os, flask_limiter, requests
+import html, json, base64, urllib.parse
 
 os.system("title Mysuru Tourism Host")
 
@@ -50,12 +51,21 @@ def index():
 
     topHotels = [{i: j for i, j in zip(["name", "thumbnail", "hotelId", "rating", "price", "address"], row)} for row in result]
 
-    with getDatabase() as database:
-        with database.cursor() as cursor:
-            cursor.execute("SELECT name, description, thumbnail, articleLink  FROM Articles LIMIT 3")
-            result = cursor.fetchall()
+    response = requests.get("https://starofmysore.com/category/feature-articles/").text
+    blogs = response.split("<div class=\"standard_blog\">")[1].split("class=\"alaya_pagenavi\"")[0]
+    result = []
 
-    topArticles = [{i: j for i, j in zip(["name", "description", "thumbnail", "link"], row)} for row in result]
+    for blog in blogs.split("<article class")[1:]:
+        link = blog.split("href=")[1][:blog.split("href=")[1].index("\">")].strip("\"")
+        title = blog.split("title=")[2][blog.split("title=")[2].index("\">")+2:].split("</a></h4>")[0]
+        date = blog.split("<span class=\"category\">")[2][:blog.split("<span class=\"category\">")[2].index("</span>")]
+        description = html.unescape(blog.split("<p>")[-1].split("</p>")[0])
+        thumbnail = blog.split("<img width=")[1].split("src=")[1][:blog.split("<img width=")[1].split("src=")[1].index("class=")].strip().strip("\"")
+        thumbnail = urllib.parse.quote_plus(thumbnail)
+
+        result.append((title, description, thumbnail, link, date,))
+
+    topArticles = [{i: j for i, j in zip(["name", "description", "thumbnail", "link", "date"], row)} for row in result[:3]]
 
     return flask.render_template(
         "index.html",
@@ -157,7 +167,23 @@ def restriction():
 
 @app.errorhandler(404)
 def not_found(e):
-    return "<h1>Under construction.</h1>"
+    path = flask.request.path
+    if path.startswith("/get-image/"):
+        url = urllib.parse.unquote_plus(path[len("/get-image/"):])
+        print(url)
+
+        if not url.startswith("https://starofmysore.com/wp-content/uploads"):
+            return ""
+
+        response = requests.get(url)
+
+        response = flask.make_response(response.content)
+        response.headers.set("Content-Type", "image/jpeg")
+        response.headers.set("Content-Disposition", "attachment", filename = "image.jpg")
+
+        return response
+
+    return "<h1>Under construction.</h1>", 404
 
 app.run(
     host = config.ip,
