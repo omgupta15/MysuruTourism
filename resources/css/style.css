@@ -143,6 +143,12 @@ footer {
     background-color: #007bff;
 }
 
+#transport {
+    text-align: center;
+    color: white;
+    background-color: #dc3545;
+}
+
 #restrictions {
     text-align: center;
     color: #212529;

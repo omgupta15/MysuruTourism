@@ -61,7 +61,7 @@
                     </li>
                     <li style="margin: 0.3rem;">
                         <div class="btn-nav">
-                            <a class="btn btn-outline-danger navbar-btn" href="/restrictions-lockdown">
+                            <a class="btn btn-outline-danger navbar-btn" href="/transport">
                                 <i class="fas fa-bus"></i>&nbsp;
                                 Transport
                             </a>
@@ -165,26 +165,26 @@
                             {% for hotel in topHotels %}
                                 <div class="col-md-4">
                                     <div class="card image-card">
-                                        <img src="/resources/img/hotels/{{ hotel.thumbnail }}" class="card-img-top">
+                                        <img src="{{ hotel.thumbnail }}" class="card-img-top">
                                         <div class="card-body">
                                             <h3 class="card-title">{{ hotel.name }}</h3>
                                             <p class="card-text hotel-text">
                                                 <strong>
                                                     <i class="fas fa-money-bill-wave"></i>
-                                                    Starting from <span class="price-span">₹{{ hotel.price.replace("&#8377;", "") }}</span>!
+                                                    Deals from <span class="price-span">{{ hotel.price }}</span>!
                                                 </strong><br>
-                                                <strong>
+                                                <!-- <strong>
                                                     <i class="fas fa-star"></i>&nbsp; Rating:
                                                 </strong>&nbsp;{{ hotel.rating }}/5 Stars
-                                                <br>
+                                                <br> -->
                                                 <strong>
                                                     &nbsp;<i class="fas fa-map-marker-check"></i>
                                                     &nbsp;Address:
                                                 </strong>
-                                                <span>{{ hotel.address[:20] }}...</span>
+                                                <span>{{ hotel.address }}</span>
                                                 <br>
                                             </p>
-                                            <a href="/hotels/{{ hotel.hotelId }}" class="btn btn-link">More Info</a>
+                                            <a href="{{ hotel.link }}" target="_blank" class="btn btn-link">More Info</a>
                                         </div>
                                     </div>
                                 </div>

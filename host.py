@@ -44,12 +44,25 @@ def index():
 
     topPlaces = [{i: j for i, j in zip(["name", "thumbnail", "description", "placeId", "index"], row + (index,))} for index, row in enumerate(result)]
 
-    with getDatabase() as database:
-        with database.cursor() as cursor:
-            cursor.execute("SELECT name, thumbnail, hotelId, rating, price, address FROM Hotels LIMIT 3")
-            result = cursor.fetchall()
+    response = requests.get(
+        "https://www.trivago.in/mysore-94410/hotel",
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+        }).text
 
-    topHotels = [{i: j for i, j in zip(["name", "thumbnail", "hotelId", "rating", "price", "address"], row)} for row in result]
+    topHotels = response.split("<h2 class=\"h2\">Top hotels</h2>")[1].split("<div class=\"trvsc_toplist_more trvsc_more_top_hotels\">")[0]
+    topHotels = topHotels.split("<a href=\"")[1:]
+    result = []
+
+    for hotel in topHotels:
+        link = hotel.split("\"")[0]
+        thumbnail = "http://" + hotel.split("<img data-src=\"//")[1].split("\"")[0]
+        name = hotel.split("<div class=\"trvsc_path_info\"><strong class=\"trvsc_path_name\">")[1].split("</strong>")[0]
+        price = hotel.split("&lrm;")[1].split("</strong>")[0]
+
+        result.append((name, thumbnail, price, "Mysuru, Karnataka", link,))
+
+    topHotels = [{i: j for i, j in zip(["name", "thumbnail", "price", "address", "link"], row)} for row in result[:3]]
 
     response = requests.get("https://starofmysore.com/category/feature-articles/").text
     blogs = response.split("<div class=\"standard_blog\">")[1].split("class=\"alaya_pagenavi\"")[0]
@@ -164,7 +177,7 @@ def articles():
             description = html.unescape(blog.split("<p>")[-1].split("</p>")[0])
             thumbnail = blog.split("<img width=")[1].split("src=")[1][:blog.split("<img width=")[1].split("src=")[1].index("class=")].strip().strip("\"")
             thumbnail = urllib.parse.quote_plus(thumbnail)
-            
+
             result.append((title, description, thumbnail, link, date,))
 
     articles = [{i: j for i, j in zip(["name", "description", "thumbnail", "link", "date"], row)} for row in result]
@@ -179,6 +192,76 @@ def articles():
         "articles.html",
         config = config,
         articles = articlesRows
+    )
+
+@app.route("/find-hotels", methods = ["GET"])
+@limiter.limit("5/second")
+def findHotels():
+    return flask.redirect(config.websiteUrl + "hotels")
+
+@app.route("/hotels", methods = ["GET"])
+@limiter.limit("5/second")
+def hotels():
+    args = flask.request.args
+    data = flask.request.get_data(as_text = True)
+    cookies = flask.request.cookies
+    headers = flask.request.headers
+    method = flask.request.method
+    ip = flask.request.remote_addr
+
+    response = requests.get(
+        "https://www.trivago.in/mysore-94410/hotel",
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+        }).text
+
+    hotelsList = response.split("<h2 class=\"h2\">Top hotels</h2>")[1].split("<div class=\"trvsc_toplist_more trvsc_more_top_hotels\">")[0]
+    hotelsList = hotelsList.split("<a href=\"")[1:]
+    result = []
+
+    for hotel in hotelsList:
+        link = hotel.split("\"")[0]
+        thumbnail = "http://" + hotel.split("<img data-src=\"//")[1].split("\"")[0]
+        name = hotel.split("<div class=\"trvsc_path_info\"><strong class=\"trvsc_path_name\">")[1].split("</strong>")[0]
+        price = hotel.split("&lrm;")[1].split("</strong>")[0]
+
+        result.append((name, thumbnail, price, "Mysuru, Karnataka", link,))
+
+    hotelsList = [{i: j for i, j in zip(["name", "thumbnail", "price", "address", "link"], row)} for row in result]
+
+    hotelsRows = [[]]
+    for index, hotel in enumerate(hotelsList):
+        if index % 3 == 0:
+            hotelsRows.append([])
+        hotelsRows[-1].append(hotel)
+
+    return flask.render_template(
+        "hotels.html",
+        config = config,
+        hotels = hotelsRows
+    )
+
+@app.route("/transport", methods = ["GET"])
+@limiter.limit("1/second")
+def transport():
+    args = flask.request.args
+    data = flask.request.get_data(as_text = True)
+    cookies = flask.request.cookies
+    headers = flask.request.headers
+    method = flask.request.method
+    ip = flask.request.remote_addr
+
+    response = requests.get("https://www.thrillophilia.com/mysore-tourist-places").text
+    transport = response.split("<div class=\"tab-heading\">Flights</div>")[1].split("<div id=\"news\" class=\"tabcontent tab-wrap\" tab-active=news>")[0]
+
+    flightsInfo = [transport.split("<span class=\"tab-content\"><p>")[1].split("</p></span>")[0].strip()]
+    localTransportInfo = [transport.split("<span class=\"tab-content\"><p>")[2].split("</p></span>")[0].strip()]
+
+    return flask.render_template(
+        "transport.html",
+        config = config,
+        flightsInfo = flightsInfo,
+        localTransportInfo = localTransportInfo
     )
 
 @app.route("/restrictions-lockdown", methods = ["GET"])

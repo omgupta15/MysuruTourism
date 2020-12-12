@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Places To Visit | {{ config.name }}</title>
+    <title>Find Hotels | {{ config.name }}</title>
 
     <link rel="icon" type="image/png" href="{{ config.websiteUrl }}/resources/img/logo.png">
     <link rel="shortcut icon" type="image/png" href="{{ config.websiteUrl }}/resources/img/logo.png">
@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 0.3rem;">
                         <div class="btn-nav">
-                            <a class="btn btn-orange navbar-btn" href="/places">
+                            <a class="btn btn-outline-orange navbar-btn" href="/places">
                                 <i class="fas fa-image"></i>&nbsp;
                                 Places to Visit
                             </a>
@@ -45,7 +45,7 @@
                     </li>
                     <li style="margin: 0.3rem;">
                         <div class="btn-nav">
-                            <a class="btn btn-outline-pink navbar-btn" href="/find-hotels">
+                            <a class="btn btn-pink navbar-btn" href="/find-hotels">
                                 <i class="fas fa-hotel"></i>&nbsp;
                                 Find Hotels
                             </a>
@@ -92,20 +92,35 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <h1 class="card-header text-uppercase" id="placesToVisit">
-                        <i class="fas fa-image"></i>&nbsp; Places To Visit
+                    <h1 class="card-header text-uppercase" id="hotels">
+                        <i class="fas fa-hotel"></i>&nbsp; Hotels
                     </h1>
                     <div class="card-body">
-                        {% for placesRow in places %}
+                        {% for hotelsRow in hotels %}
                             <div class="row">
-                                {% for place in placesRow %}
+                                {% for hotel in hotelsRow %}
                                     <div class="col-md-4">
                                         <div class="card image-card">
-                                            <img src="/resources/img/places/{{ place.thumbnail }}" class="card-img-top" alt="{{ place.name }}">
+                                            <img src="{{ hotel.thumbnail }}" class="card-img-top">
                                             <div class="card-body">
-                                                <h5 class="card-title">{{ place.name }}</h5>
-                                                <p class="card-text">{{ place.description }}</p>
-                                                <a href="/place/{{ place.placeId }}" class="btn btn-link">View Details</a>
+                                                <h3 class="card-title">{{ hotel.name }}</h3>
+                                                <p class="card-text hotel-text">
+                                                    <strong>
+                                                        <i class="fas fa-money-bill-wave"></i>
+                                                        Deals from <span class="price-span">{{ hotel.price }}</span>!
+                                                    </strong><br>
+                                                    <!-- <strong>
+                                                        <i class="fas fa-star"></i>&nbsp; Rating:
+                                                    </strong>&nbsp;{{ hotel.rating }}/5 Stars
+                                                    <br> -->
+                                                    <strong>
+                                                        &nbsp;<i class="fas fa-map-marker-check"></i>
+                                                        &nbsp;Address:
+                                                    </strong>
+                                                    <span>{{ hotel.address }}</span>
+                                                    <br>
+                                                </p>
+                                                <a href="{{ hotel.link }}" target="_blank" class="btn btn-link">More Info</a>
                                             </div>
                                         </div>
                                     </div>
