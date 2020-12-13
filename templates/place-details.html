@@ -96,9 +96,9 @@
                         {{ placeDetails.name }}
                     </h1>
 
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 0px; margin-left: 1px; margin-right: 0px;">
                         <div class="col-md-12">
-                            <div id="carouselIndicators" class="carousel slide mr-2" data-ride="carousel">
+                            <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
                                     {% for image in placeDetails.images %}
                                         <li data-target="#carouselIndicators" data-slide-to="{{ image.index }}"{% if not image.index %} class="active"{% endif %}></li>
@@ -123,35 +123,121 @@
                         </div>
                     </div>
 
-                    <div style="padding: 1rem;">
+                    <div style="padding: 1.25rem; padding-top: 0.2rem;">
+                        <hr>
+
                         <h3 class="text-uppercase">Description:</h3>
 
-                        {% for paragraph in placeDetails.description.strip().split("\n\n") %}
-                            <p style="font-size: 125%;">
-                                {{ paragraph }}
-                            </p>
-                        {% endfor %}
+                        <div style="padding: 1rem; padding-bottom: 0rem;">
+                            {% for paragraph in placeDetails.description.strip().split("\n\n") %}
+                                <p style="font-size: 125%; text-align: justify;">
+                                    {{ paragraph }}
+                                </p>
+                            {% endfor %}
+                        </div>
 
-                        <br>
+                        <hr>
 
                         <h3>TIMINGS: {{ placeDetails.timings }}</h3>
 
-                        <br>
+                        <hr>
 
                         <h3 class="text-uppercase" style="display: inline;">Address:&nbsp;&nbsp;</h3>
                         <h4 style="display: inline;">{{ placeDetails.address }}</h4>
 
-                        <br><br>
+                        <hr>
 
                         <h3 style="margin-top: 0.35rem;" class="text-uppercase">View on Map:</h3>
                         <iframe src="{{ placeDetails.googleMapsEmbedUrl }}" width="100%" height="500px"></iframe>
+
+                        <hr>
+
+                        <h3 style="margin-top: 0.35rem; display: inline;" class="text-uppercase">User Reviews:</h3>
+                        <button id="addReviewButton" class="btn btn-outline-orange" style="float: right;">
+                            <i class="fas fa-plus"></i>
+                            Add a Review
+                        </button>
+
+                        <br><br>
+
+                        <div class="card" id="addReviewDiv" style="margin-top: 1rem; border: 0.12rem solid lightgrey;" hidden>
+                            <h4 class="card-header" style="color: white; background-color: #f58120;">Add a Review</h4>
+                            
+                            <div class="card-body">
+                                <div style="margin-bottom: 1rem;">
+                                    <label for="name" style="font-size: 125%;">
+                                        <i class="fas fa-user"></i>
+                                        Name: &nbsp;&nbsp;
+                                    </label>
+                                    <input type="text" name="name" id="name" placeholder="Enter your name here (optional)" style="padding: 0.4rem; width: 100%;">
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 0.3rem;">
+                                    <label for="rating" style="font-size: 125%;">
+                                        <i class="fas fa-star"></i>
+                                        Rate this Place (1-10): 
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <input class="form-input" type="number" name="rating" id="rating" min="1" max="10" value="10">
+                                </div>
+
+                                <div class="form-group" style="margin-top: 0px;">
+                                    <label for="review" style="display: block; font-size: 125%;">
+                                        <i class="fas fa-edit"></i>
+                                        Review:
+                                    </label>
+                                    <textarea class="" type="text" name="review" id="review" placeholder="Enter Review Here" rows="6" style="width: 100%; padding: 0.6rem;"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-light btn-block" style="font-size: 125%; border-color: grey;" id="cancelButton">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-orange btn-block" style="font-size: 125%;" id="submitReviewButton">
+                                            Submit Review
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="comments" style="font-size: 125%;">
+                            {% if not placeDetails.reviews %}
+                                <div class="card-body grey-text" style="padding-left: 1rem; font-size: 90%;">
+                                    <span style="display: inline;">No Reviews yet! Be the first one to review this place</span> <i class="fas fa-sparkles"></i>
+                                </div>
+                            {% else %}
+                                {% for review in placeDetails.reviews %}
+                                    <div class="card-body" style="padding-left: 1rem;">
+                                        <i class="fas fa-user-circle"></i>&nbsp; {{ review.name }}
+                                        <span class="grey-text" style="font-size: 75%; padding: 0.5rem;">
+                                            <i class="fas fa-calendar"></i>&nbsp; {{ review.added }}
+                                        </span>
+                                        <p class="" style="font-size: 90%; padding: 0.5rem; margin-bottom: 0px; padding-bottom: 0.1rem;">
+                                            <strong class="text-uppercase">
+                                                <i class="fas fa-star"></i> Rating: {{ review.rating }}/10
+                                            </strong>
+
+                                            <br>
+
+                                            <strong class="text-uppercase">
+                                                <i class="fas fa-edit"></i> Review:
+                                            </strong>
+                                            {{ review.review }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        
     </section>
+
+    <br><br><br><br>
 
     <footer>
         <div class="footer-div">
@@ -165,5 +251,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.4/jquery.touchSwipe.min.js"></script>
     <script src="/resources/js/index.js"></script>
+    <script src="/resources/js/place-details.js"></script>
 </body>
 </html>

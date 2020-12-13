@@ -1,5 +1,5 @@
 import flask, time, waitress, mysql.connector, paginate, os, flask_limiter, requests
-import html, json, base64, urllib.parse
+import html, json, base64, urllib.parse, datetime
 
 os.system("title Mysuru Tourism Host")
 
@@ -49,7 +49,7 @@ def index():
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
         }).text
-    
+
     topHotels = response.split("<h2 class=\"h2\">Top hotels</h2>")[1].split("<div class=\"trvsc_toplist_more trvsc_more_top_hotels\">")[0]
     topHotels = topHotels.split("<a href=\"")[1:]
     result = []
@@ -117,7 +117,7 @@ def placesToVisit():
         places = placesRows
     )
 
-@app.route("/place/<placeId>", methods = ["GET"])
+@app.route("/place/<placeId>", methods = ["GET", "POST"])
 @limiter.limit("5/second")
 def getPlaceDetails(placeId):
     args = flask.request.args
@@ -135,24 +135,88 @@ def getPlaceDetails(placeId):
     if not result:
         return "<h1>Place not found in database.</h1>", 404
 
-    placeDetails = {
-        "name": result[1],
-        "placeId": result[2],
-        "shortDescription": result[3],
-        "description": result[4].strip(),
-        "thumbnail": result[5],
-        "images": [{"index": index, "image": image} for index, image in enumerate(result[6].split(","))],
-        "timings": result[7],
-        "address": result[8],
-        "location": result[9],
-        "googleMapsEmbedUrl": getGoogleMapsEmbedUrl(result[9])
-    }
-    
-    return flask.render_template(
-        "place-details.html",
-        config = config,
-        placeDetails = placeDetails
-    )
+    placeDatabaseId = result[0]
+
+    if method == "GET":
+        with getDatabase() as database:
+            with database.cursor() as cursor:
+                cursor.execute("SELECT name, review, added, rating FROM Reviews WHERE placeId = %s AND NOT blocked", (placeDatabaseId,))
+                reviewsResult = cursor.fetchall()
+
+        reviews = [{"name": name, "review": review, "added": datetime.datetime.fromtimestamp(added/1000).strftime("%d %B, %Y"), "rating": rating} for name, review, added, rating in reviewsResult]
+
+        placeDetails = {
+            "name": result[1],
+            "placeId": result[2],
+            "shortDescription": result[3],
+            "description": result[4].strip(),
+            "thumbnail": result[5],
+            "images": [{"index": index, "image": image} for index, image in enumerate(result[6].split(","))],
+            "timings": result[7],
+            "address": result[8],
+            "location": result[9],
+            "googleMapsEmbedUrl": getGoogleMapsEmbedUrl(result[9]),
+            "reviews": reviews
+        }
+        
+        return flask.render_template(
+            "place-details.html",
+            config = config,
+            placeDetails = placeDetails
+        )
+
+    elif method == "POST":
+        try:
+            data = json.loads(data)
+            username = str(flask.escape(data["name"]))
+            rating = int(data["rating"])
+            review = str(flask.escape(data["review"]))
+        except:
+            return flask.jsonify({
+                "success": False,
+                "error": "invalid-json"
+            })
+
+        if not username or len(username) > 40:
+            return flask.jsonify({
+                "success": False,
+                "error": "invalid-username"
+            })
+
+        if rating not in range(1, 11):
+            return flask.jsonify({
+                "success": False,
+                "error": "invalid-rating"
+            })
+
+        if not review or len(review) > 10000:
+            return flask.jsonify({
+                "success": False,
+                "error": "invalid-review"
+            })
+
+        with getDatabase() as database:
+            with database.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO Reviews (
+                        name,
+                        review,
+                        added,
+                        rating,
+                        placeId,
+                        blocked
+                    ) VALUES (%s, %s, %s, %s, %s, %s)
+                """, (
+                    username,
+                    review,
+                    int(time.time()*1000),
+                    rating,
+                    placeDatabaseId,
+                    False,
+                ))
+                database.commit()
+
+        return flask.jsonify({"success": True})
 
 @app.route("/articles", methods = ["GET"])
 @limiter.limit("5/second")
@@ -286,6 +350,22 @@ def restriction():
         config = config,
         restrictions = restrictions,
         quarantineRules = quarantineRules
+    )
+
+@app.route("/about", methods = ["GET"])
+@limiter.limit("5/second")
+def about():
+    args = flask.request.args
+    data = flask.request.get_data(as_text = True)
+    cookies = flask.request.cookies
+    headers = flask.request.headers
+    method = flask.request.method
+    ip = flask.request.remote_addr
+
+    return flask.render_template(
+        "about.html",
+        config = config,
+        googleMapsEmbedUrl = getGoogleMapsEmbedUrl("Mysore, Karnataka, India")
     )
 
 @app.errorhandler(404)

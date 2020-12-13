@@ -161,6 +161,12 @@ footer {
     background-color: #f58120;
 }
 
+#about {
+    text-align: center;
+    color: white;
+    background-color: #28a745;
+}
+
 .price-span {
     color: #008f00;
 }

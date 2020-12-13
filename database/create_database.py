@@ -38,34 +38,49 @@ with getDatabase() as database:
         """)
         database.commit()
 
-with getDatabase() as database:
-    with database.cursor() as cursor:
-        cursor.execute("""
-            CREATE TABLE Hotels (
-                id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                name TEXT,
-                hotelId LONGTEXT,
-                rating INT, -- out of 5
-                price TEXT,
-                description LONGTEXT,
-                thumbnail LONGTEXT,
-                images LONGTEXT,
-                address TEXT,
-                location TEXT,
-                trivagoLink LONGTEXT
-            )
-        """)
-        database.commit()
+# with getDatabase() as database:
+#     with database.cursor() as cursor:
+#         cursor.execute("""
+#             CREATE TABLE Hotels (
+#                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
+#                 name TEXT,
+#                 hotelId LONGTEXT,
+#                 rating INT, -- out of 5
+#                 price TEXT,
+#                 description LONGTEXT,
+#                 thumbnail LONGTEXT,
+#                 images LONGTEXT,
+#                 address TEXT,
+#                 location TEXT,
+#                 trivagoLink LONGTEXT
+#             )
+#         """)
+#         database.commit()
+
+# with getDatabase() as database:
+#     with database.cursor() as cursor:
+#         cursor.execute("""
+#             CREATE TABLE Articles (
+#                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
+#                 name TEXT,
+#                 description LONGTEXT,
+#                 thumbnail LONGTEXT,
+#                 articleLink LONGTEXT
+#             )
+#         """)
+#         database.commit()
 
 with getDatabase() as database:
     with database.cursor() as cursor:
         cursor.execute("""
-            CREATE TABLE Articles (
+            CREATE TABLE Reviews (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 name TEXT,
-                description LONGTEXT,
-                thumbnail LONGTEXT,
-                articleLink LONGTEXT
+                review LONGTEXT,
+                added BIGINT,
+                rating INT,
+                placeId BIGINT,
+                blocked BOOLEAN
             )
         """)
         database.commit()
