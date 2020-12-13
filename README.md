@@ -1,4 +1,4 @@
-# [Mysuru Tourism](https://mysuru.us.to/ "Website")
+# [Mysuru Tourism Website](https://mysuru.us.to/ "Mysuru Tourism Website")
 
 Explore places to visit & best deals on hotels, read articles and get the latest information on covid guidelines in the city.
 
@@ -9,7 +9,7 @@ This is a project made for [DSC WOW Hackathon](https://hackathon.dscwow.tech/ "D
 # Demo:
 ![Demo](https://media4.giphy.com/media/n0BXiIIESlApq56U1i/giphy.gif)
 
-[Click here to view this demo as MP4 Video.](https://mysuru.us.to/resources/video/Mysuru%20Tourism%20-%20Demo.mp4)
+[Click here to view the full Demo Video (Recommended).](https://mysuru.us.to/resources/video/Mysuru%20Tourism%20-%20Demo.mp4)
 
 # Features
 
