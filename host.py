@@ -13,10 +13,10 @@ def getDatabase():
 
 class config:
     name = "Mysuru Tourism"
-    host = "localhost" # "mysuru.us.to"
-    websiteUrl = "http://localhost/" # "https://mysuru.us.to/"
-    ip = "127.0.0.1" # "0.0.0.0"
-    port = 80 # 2525
+    host = "mysuru.us.to"
+    websiteUrl = "https://mysuru.us.to/"
+    ip = "0.0.0.0"
+    port = 4567
 
 def getGoogleMapsEmbedUrl(location):
     return "https://www.google.com/maps/embed/v1/place?key={apiKey}&q={location}".format(
@@ -24,7 +24,7 @@ def getGoogleMapsEmbedUrl(location):
         location = location.replace(" ", "+")
     )
 
-app = flask.Flask(__name__, static_folder = "resources")
+app = flask.Flask(__name__) #, static_folder = "resources")
 limiter = flask_limiter.Limiter(app, key_func = flask_limiter.util.get_remote_address)
 
 @app.route("/", methods = ["GET"])
@@ -388,8 +388,5 @@ def not_found(e):
 
     return "<h1>Under construction.</h1>", 404
 
-app.run(
-    host = config.ip,
-    port = config.port,
-    debug = True
-)
+# app.run(host = config.ip, port = config.port, debug = True)
+waitress.serve(app, host = config.ip, port = config.port)
