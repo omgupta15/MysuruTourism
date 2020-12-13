@@ -4,7 +4,7 @@ Explore places to visit & best deals on hotels, read articles and get the latest
 
 View the Project LIVE: https://mysuru.us.to/
 
-This is a project made for [DSC WOW Hackathon](https://hackathon.dscwow.tech/ "DSC WOW Hackathon Website").
+This project was created for [DSC WOW Hackathon](https://hackathon.dscwow.tech/ "DSC WOW Hackathon Website").
 
 # Demo:
 ![Demo](https://media4.giphy.com/media/n0BXiIIESlApq56U1i/giphy.gif)
@@ -21,6 +21,7 @@ This is a project made for [DSC WOW Hackathon](https://hackathon.dscwow.tech/ "D
 * Read latest articles about the city.
 * Get transportation facilities information.
 * Get latest information about restrictions and lockdowns in the city due to COVID-19.
+* Integration with Trivago to fetch latest hotel deals.
 
 # Libraries Used
 
